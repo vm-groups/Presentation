@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Captain Vikram Batra Tribute</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #000010, #0d0d2a);
+      color: #f1c40f;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      position: relative;
+      scroll-snap-type: y mandatory;
+      /* scroll snap */
+    }
+
+    /* Particles canvas */
+    #particles {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    /* Sections */
+    section,
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 50px 20px 150px 20px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 1s ease;
+      scroll-snap-align: center;
+      /* snap to center */
+    }
+
+    /* Reveal */
+    .active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Hero */
+    .hero h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 5rem;
+      text-shadow: 2px 2px 20px rgba(241, 196, 15, 0.8);
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      margin-top: 20px;
+      max-width: 700px;
+      line-height: 1.5;
+      color: #f0e68c;
+    }
+
+    .hero .cta {
+      margin-top: 30px;
+      padding: 15px 35px;
+      background: #f1c40f;
+      color: #000010;
+      border: none;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(241, 196, 15, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .hero .cta:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 40px rgba(241, 196, 15, 0.8);
+    }
+
+    /* Cards */
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .card {
+      background: rgba(0, 0, 20, 0.7);
+      border: 2px solid #f1c40f;
+      border-radius: 15px;
+      padding: 20px;
+      width: 250px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card.highlight {
+      transform: translateY(-10px) rotateY(5deg) scale(1.05);
+      box-shadow: 0 0 40px #f1c40f;
+      transition: all 0.5s ease;
+    }
+
+    /* === New Animation for Images and Text === */
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .card p {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .card.show-text img,
+    .card.show-text p {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Section Titles */
+    h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 10px rgba(241, 196, 15, 0.7);
+    }
+
+    /* Paragraphs */
+    p {
+      max-width: 800px;
+      line-height: 1.6;
+      font-size: 1.2rem;
+      color: #f0e68c;
+    }
+
+    /* Jai Hind Button */
+    #jaiHindBtn {
+      margin-top: 30px;
+      padding: 18px 40px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #f1c40f, #ffd700);
+      color: #000010;
+      border: 2px solid #f1c40f;
+      cursor: pointer;
+      box-shadow: 0 0 25px #f1c40f, 0 0 50px #ffd700;
+      transition: all 0.3s ease;
+    }
+
+    #jaiHindBtn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 35px #f1c40f, 0 0 60px #ffd700;
+    }
+
+    /* Footer always visible */
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 1.2rem;
+      color: #f1c40f;
+      background: rgba(0, 0, 20, 0.95);
+      border-top: 2px solid #f1c40f;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+    }
+
+    #timeline {
+      padding-top: 40px;
+      padding-bottom: 120px;
+    }
+
+    #timeline h2 {
+      margin-bottom: 18px;
+    }
+
+    /* layout */
+    .timeline {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 12px;
+    }
+
+    /* each item */
+    .timeline-item {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      padding: 16px;
+      background: rgba(0, 0, 20, 0.55);
+      border: 1.5px solid rgba(241, 196, 15, 0.12);
+      border-left: 4px solid rgba(241, 196, 15, 0.18);
+      border-radius: 12px;
+      transition: transform .45s cubic-bezier(.2, .9, .2, 1), box-shadow .45s;
+    }
+
+    /* dot */
+    .timeline-dot {
+      min-width: 40px;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(241, 196, 15, 0.06);
+      border-radius: 50%;
+      border: 1px solid rgba(241, 196, 15, 0.12);
+      box-shadow: 0 0 8px rgba(241, 196, 15, 0.04);
+    }
+
+    /* content */
+    .timeline-date {
+      font-weight: 700;
+      color: #ffd966;
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+      text-align: center;
+      /* centers text horizontally within its container */
+      width: 100%;
+    }
+
+    .timeline-content .tl-text {
+      margin: 0;
+      color: #f0e68c;
+      opacity: 0;
+      /* hidden until show-text */
+      transition: opacity .45s ease;
+    }
+
+    /* highlight style (applies when revealed) */
+    .timeline-item.highlight {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(241, 196, 15, 0.12), 0 0 40px rgba(241, 196, 15, 0.06) inset;
+      border-left-color: #f1c40f;
+    }
+
+    .timeline-item.show-text .tl-text {
+      opacity: 1;
+    }
+
+    /* responsive */
+    @media (max-width:720px) {
+      .timeline-item {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px;
+      }
+
+      .timeline-dot {
+        min-width: 34px;
+        min-height: 34px;
+      }
+    }
+    /* Assignments & Heroics Section */
+#assignments {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+#assignments h2 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3rem;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 10px rgba(241,196,15,0.7);
+}
+
+#assignments p {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+  color: #f0e68c;
+  line-height: 1.6;
+}
+
+/* Cards for assignments & heroics */
+#assignments .cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+#assignments .card {
+  background: rgba(0,0,20,0.7);
+  border: 2px solid #f1c40f;
+  border-radius: 15px;
+  padding: 20px;
+  width: 250px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+
+#assignments .card.highlight {
+  transform: translateY(-10px) rotateY(5deg) scale(1.05);
+  box-shadow: 0 0 40px #f1c40f;
+}
+
+#assignments .card.show-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#assignments .card img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Particles -->
+  <canvas id="particles"></canvas>
+
+  <!-- Hero -->
+  <div class="hero active">
+    <h1>Captain Vikram Batra</h1>
+    <p>Param Vir Chakra • Kargil War Hero • 1974–1999</p>
+    <p>Gallantry Award Winner</p>
+    <button class="cta" id="scrollBtn">Discover His Story</button>
+  </div>
+
+  <!-- About Him -->
+  <section id="about">
+    <h2>About Him</h2>
+    <p>Captain Vikram Batra was born on 9th September 1974 in Palampur, Himachal Pradesh. From a young age, he displayed
+      leadership, courage, and sportsmanship. He completed his schooling with excellence and later joined the Indian
+      Army, following his dream of serving the nation.</p>
+    <div class="cards">
+      <div class="card">
+        <img src="Childhood.jpg" alt="Childhood">
+        <p>Bright student and athlete who excelled in academics and sports.</p>
+      </div>
+      <div class="card">
+        <img src="Army Training.jpg" alt="Army Training">
+        <p>Joined Indian Army in 1997, trained at Indian Military Academy and became a brave soldier.</p>
+      </div>
+      <div class="card">
+        <img src="Personality.jpg" alt="Personality">
+        <p>Known for humility, teamwork, and fearless attitude in life and combat.</p>
+      </div>
+      <div class="card">
+        <img src="Academics.jpg" alt="Academics">
+        <p>Excelled in studies and inspired friends and juniors with his dedication.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Heroics -->
+  <section id="heroics">
+    <h2>Kargil War Heroics</h2>
+    <p>During the 1999 Kargil War, Captain Vikram Batra demonstrated unparalleled bravery, inspiring his team and
+      leaving a lasting legacy.</p>
+    <div class="cards">
+      <div class="card">
+        <img src="Point 5140.jpg" alt="Point 5140">
+        <p>Led the successful mission to capture Point 5140, displaying extraordinary courage under enemy fire.</p>
+      </div>
+      <div class="card">
+        <img src="Point 4875.jpg" alt="Point 4875">
+        <p>Captured strategic Point 4875, saving his team and securing victory for India.</p>
+      </div>
+      <div class="card">
+        <img src="bravery.jpg" alt="Bravery">
+        <p>Famous for shouting "Yeh Dil Maange More!" during intense combat, symbolizing his indomitable spirit.</p>
+      </div>
+      <div class="card">
+        <img src="Sacrifice.jpg" alt="Sacrifice">
+        <p>Martyred on 7th July 1999, posthumously awarded Param Vir Chakra for supreme bravery.</p>
+      </div>
+    </div>
+  </section>
+  <section id="timeline">
+    <h2>Timeline & Journey</h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot" aria-hidden>
+          <!-- small medal icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#f1c40f" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 2L14.09 8.26L20.9 8.27L15.45 11.99L17.54 18.26L12 14.77L6.46 18.26L8.55 11.99L3.1 8.27L9.91 8.26L12 2Z" />
+          </svg>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-date">1974</div>
+          <p class="tl-text">Born in <strong>Palampur, Himachal Pradesh</strong>.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">
+          <!-- small army icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#f1c40f" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L15 8H9L12 2ZM4 9H20L18 20H6L4 9Z" />
+          </svg>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-date">1996</div>
+          <p class="tl-text">Joined the <strong>Indian Army</strong>.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">
+          <!-- map/flag icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#f1c40f" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 3V21H5V13L9 15L13 13L17 15V5L13 3L9 5L5 3H3Z" />
+          </svg>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-date">1999</div>
+          <p class="tl-text">Kargil War — <strong>Operation Vijay</strong>.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">
+          <!-- cross / star for sacrifice -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#f1c40f" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 2L13.09 8.26L19.9 8.27L14.45 11.99L16.54 18.26L12 14.77L7.46 18.26L9.55 11.99L4.1 8.27L10.91 8.26L12 2Z" />
+          </svg>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-date">July 7, 1999</div>
+          <p class="tl-text">Made the <strong>supreme sacrifice</strong> while rescuing comrades.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">
+          <!-- medal ribbon icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#f1c40f" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L8 8L2 9L6 14L5 22L12 19L19 22L18 14L22 9L16 8L12 2Z" />
+          </svg>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-date">Posthumous</div>
+          <p class="tl-text">Awarded the <strong>Param Vir Chakra</strong> — India’s highest wartime gallantry award.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Assignments & Heroics -->
+<section id="assignments">
+  <h2>Assignments </h2>
+  <p>Captain Vikram Batra’s key assignments in the Indian Army and his courageous operations during the Kargil War.</p>
+  
+  <div class="cards">
+    <div class="card">
+      <img src="Army Training.jpg" alt="Army Training">
+      <p><strong>Assignments:</strong> Posted in high-altitude regions of J&K; trained in mountain warfare, survival, and reconnaissance.</p>
+    </div>
+    <div class="card">
+      <img src="Point 5140.jpg" alt="Point 5140">
+      <p><strong>Point 5140:</strong> Led night-time assault under enemy fire; recaptured the post; famous for "Yeh Dil Maange More!"</p>
+    </div>
+    <div class="card">
+      <img src="Point 4875.jpg" alt="Point 4875">
+      <p><strong>Point 4875 (Tololing):</strong> Secured strategic post under artillery fire; saved lives of fellow soldiers.</p>
+    </div>
+    <div class="card">
+      <img src="Leadership.jpg" alt="Leadership">
+      <p><strong>Tactical Leadership:</strong> Led from the front; quick decision-making; inspired troops under life-threatening conditions.</p>
+    </div>
+    <div class="card">
+      <img src="Legacy.jpg" alt="Legacy">
+      <p><strong>Legacy:</strong> Actions became a case study for bravery and mountain warfare; inspired generations of soldiers.</p>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Values & Inspiration -->
+  <section id="values">
+    <h2>Values & Inspiration</h2>
+    <p>Captain Batra’s life teaches lessons of courage, leadership, patriotism, and selflessness. His story inspires
+      millions of Indians to put the nation above themselves.</p>
+    <div class="cards">
+      <div class="card">
+        <p><strong>Courage:</strong> Fearless in all battles.</p>
+      </div>
+      <div class="card">
+        <p><strong>Leadership:</strong> Led his team with strategy & care.</p>
+      </div>
+      <div class="card">
+        <p><strong>Patriotism:</strong> Loved his country above all.</p>
+      </div>
+      <div class="card">
+        <p><strong>Selflessness:</strong> Sacrificed life for others.</p>
+      </div>
+      <div class="card">
+        <p><strong>Inspiration:</strong> Continues to motivate soldiers and civilians alike.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tribute -->
+  <section id="tribute">
+    <h2>Tribute & Legacy</h2>
+    <p>"A hero lives forever in the heart of his nation." – Vineesh</p>
+    <div class="cards">
+      <div class="card">
+        <img src="Param Vir Chakra.jpg" alt="Param Vir Chakra">
+        <p>Posthumously awarded Param Vir Chakra, India’s highest military honor.</p>
+      </div>
+      <div class="card">
+        <img src="Memorial.jpg" alt="Memorial">
+        <p>Memorials, schools, and roads named after him to preserve his memory.</p>
+      </div>
+      <div class="card">
+        <img src="Legacy.jpg" alt="Legacy">
+        <p>His bravery continues to inspire generations to serve the nation.</p>
+      </div>
+    </div>
+    <button id="jaiHindBtn" onclick="alert('Jai Hind! 🇮🇳')">Jai Hind 🇮🇳</button>
+  </section>
+
+  <footer>
+    © 2025 Vineesh | Captain Vikram Batra Tribute
+  </footer>
+
+  <script>
+    // Reveal cards in Assignments section
+async function revealAssignments() {
+  const cards = document.querySelectorAll('#assignments .card');
+  for(let card of cards) {
+    card.classList.add('highlight');
+    await new Promise(r => setTimeout(r, 400));
+    card.classList.add('show-text');
+    await new Promise(r => setTimeout(r, 900));
+    card.classList.remove('highlight');
+  }
+}
+
+// Intersection Observer for Assignments section
+const assignmentsSection = document.getElementById('assignments');
+const observerAssignments = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) {
+      assignmentsSection.classList.add('active');
+      revealAssignments();
+    }
+  });
+}, { threshold: 0.4 });
+
+observerAssignments.observe(assignmentsSection);
+
+    async function revealTimeline(sectionId) {
+      const container = document.getElementById(sectionId);
+      if (!container) return;
+      const items = container.querySelectorAll('.timeline-item');
+      for (let i = 0; i < items.length; i++) {
+        const it = items[i];
+        it.classList.add('highlight');
+        // wait for highlight to show like hover
+        await new Promise(r => setTimeout(r, 900));
+        // show its text/explanation
+        it.classList.add('show-text');
+        await new Promise(r => setTimeout(r, 900));
+        // remove highlight but keep text visible (or remove both if you want)
+        it.classList.remove('highlight');
+        // slight gap before next
+        await new Promise(r => setTimeout(r, 300));
+      }
+    }
+
+    /* Hook into existing IntersectionObserver or create a lightweight one */
+    const tlObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          revealTimeline('timeline');
+          obs.unobserve(entry.target); // run once
+        }
+      });
+    }, { threshold: 0.5 });
+
+    const tlSection = document.getElementById('timeline');
+    if (tlSection) tlObserver.observe(tlSection);
+    // ===== Scroll to About Section centered =====
+    document.getElementById('scrollBtn').addEventListener('click', async () => {
+      const about = document.getElementById('about');
+      const offset = (window.innerHeight - about.offsetHeight) / 2;
+      window.scrollTo({ top: about.offsetTop - offset, behavior: 'smooth' });
+      await new Promise(r => setTimeout(r, 800));
+      revealCards('about');
+    });
+
+    // ===== Card Guided Reveal Function (Enhanced Animation) =====
+    async function revealCards(sectionId) {
+      const cards = document.querySelectorAll(`#${sectionId} .card`);
+      for (let card of cards) {
+        card.classList.add('highlight');
+        await new Promise(r => setTimeout(r, 400)); // small delay before show
+        card.classList.add('show-text');
+        await new Promise(r => setTimeout(r, 900)); // wait for animation
+        card.classList.remove('highlight');
+      }
+    }
+
+    // ===== Intersection Observer for scroll reveal & animation =====
+    const sections = document.querySelectorAll('section, .hero');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          if (entry.target.id) revealCards(entry.target.id);
+        }
+      });
+    }, { threshold: 0.4 });
+    sections.forEach(section => observer.observe(section));
+
+    // ===== Particles =====
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let particlesArray = [];
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 - 0.5;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+      draw() {
+        ctx.fillStyle = '#f1c40f';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    function initParticles() {
+      particlesArray = [];
+      for (let i = 0; i < 150; i++) {
+        particlesArray.push(new Particle());
+      }
+    }
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particlesArray.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animateParticles);
+    }
+    initParticles();
+    animateParticles();
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initParticles();
+    });
+
+    // ===== Scroll snapping to next section on wheel =====
+    let isScrolling = false;
+    window.addEventListener('wheel', (e) => {
+      if (isScrolling) return;
+      isScrolling = true;
+      const delta = e.deltaY;
+      const currentScroll = window.scrollY;
+      let targetSection;
+      if (delta > 0) {
+        for (let sec of sections) {
+          if (sec.offsetTop > currentScroll + 10) { targetSection = sec; break; }
+        }
+      } else {
+        for (let i = sections.length - 1; i >= 0; i--) {
+          if (sections[i].offsetTop < currentScroll - 10) { targetSection = sections[i]; break; }
+        }
+      }
+      if (targetSection) {
+        const offset = (window.innerHeight - targetSection.offsetHeight) / 2;
+        window.scrollTo({ top: targetSection.offsetTop - offset, behavior: 'smooth' });
+      }
+      setTimeout(() => { isScrolling = false; }, 700);
+    });
+  </script>
+</body>
+
+</html>
